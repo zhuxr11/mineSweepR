@@ -16,7 +16,7 @@ stats](https://cranlogs.r-pkg.org/badges/grand-total/mineSweepR)](https://CRAN.R
 
 **Package**: [*mineSweepR*](https://github.com/zhuxr11/mineSweepR)
 0.1.0<br /> **Author**: Xiurui Zhu<br /> **Modified**: 2023-10-06
-21:40:22<br /> **Compiled**: 2023-10-06 21:40:31
+21:55:11<br /> **Compiled**: 2023-10-06 21:55:21
 
 **Let’s have fun with R!** This is the very popular mine sweeper game!
 In this game, you are required to find out tiles that contain mines
@@ -102,7 +102,7 @@ The title tells game state, number of unflagged mines and playing time.
 <dd>
 <p>You may restart game with <code>r</code> at any time. If you have not won or lost the game, it is not recorded in game statistics.</p> </dd> <dt><strong>BOSS KEY!</strong></dt>
 <dd>
-<p>You may press any key other than <code>r</code> for <i>≥</i> 2 times to close game window.</p> </dd> </dl>
+<p>You may press boss key (any key other than <code>r</code>) for <i>≥</i> 2 times to close game window.</p> </dd> </dl>
 
 ## Game customization
 
@@ -138,6 +138,6 @@ including:
 <td><code>restart_key</code></td> <td> <p>Character as the key to restart game, used when you have won or lost a game.</p> </td>
 </tr>
 <tr valign="top">
-<td><code>exit_key_press</code></td> <td> <p>Integer as the times of boss key presses (other than <code>restart_key</code>) required to close game window. This may come in handy in emergency (:D).</p> </td>
+<td><code>exit_key_press</code></td> <td> <p>Integer as the times of boss key presses (boss key is any key other than <code>restart_key</code>) required to close game window. This may come in handy in emergency (:D).</p> </td>
 </tr>
 </table>

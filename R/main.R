@@ -31,8 +31,8 @@ NULL
 #' excluding \code{title}.
 #' @param time_prec Integer as time precision (e.g. 0 for seconds or 3 for miliseconds).
 #' @param restart_key Character as the key to restart game, used when you have won or lost a game.
-#' @param exit_key_press Integer as the times of boss key presses (other than \code{restart_key})
-#' required to close game window. This may come in handy in emergency (:D).
+#' @param exit_key_press Integer as the times of boss key presses (boss key is any key
+#' other than \code{restart_key}) required to close game window. This may come in handy in emergency (:D).
 #' @param debug Logical, internal use only.
 #'
 #' @details Game instructions:
@@ -51,7 +51,7 @@ NULL
 #'   \item{Game statistics}{After you win or lose a game, game statistics are recorded.}
 #'   \item{Restart game}{You may restart game with \code{restart_key} at any time. If you have not won or lost the game,
 #'   it is not recorded in game statistics.}
-#'   \item{**BOSS KEY!**}{You may press any key other than \code{restart_key} for \eqn{\ge} \code{exit_key_press} times
+#'   \item{**BOSS KEY!**}{You may press boss key (any key other than \code{restart_key}) for \eqn{\ge} \code{exit_key_press} times
 #'   to close game window.}
 #' }
 #'
@@ -97,7 +97,7 @@ run_game <- function(
 
   # Initialize common variables
   alive_state <- button <- ht_obj <- mask_mat <- init_state <- flag_mat <- row_idx <- col_idx <-
-    start_time <- exit_confirm <- on_event <- NULL
+    start_time <- exit_confirm <- on_event <- seed <- NULL
 
   # Functions for graphic events
   set_dev <- function(dev) {
@@ -181,7 +181,10 @@ run_game <- function(
                 # Initialize game when first unmask is made
                 if (init_state == TRUE) {
                   # Set start time when the first unmask is made
-                  rlang::env_bind(rlang::env_parent(), init_state = FALSE, start_time = Sys.time())
+                  rlang::env_bind(rlang::env_parent(),
+                                  init_state = FALSE,
+                                  start_time = Sys.time(),
+                                  seed = .Random.seed)
                   mine_mat <- gen_mine_mat(n_row = n_row,
                                            n_col = n_col,
                                            n_mine = n_mine,
@@ -375,7 +378,15 @@ run_game <- function(
     onKeybd = key_press
   )
   event_env <- grDevices::getGraphicsEventEnv()
-  on.exit(if (debug == FALSE) grDevices::dev.off(event_env[["which"]]), add = TRUE)
+  on.exit({
+    if (debug == FALSE) {
+      grDevices::dev.off(event_env[["which"]])
+    } else {
+      if (is.null(seed) == FALSE) {
+        message("[debug] random seed = ", paste(head(seed), collapse = ", "), ", ...")
+      }
+    }
+  }, add = TRUE)
   init_game()
   grDevices::getGraphicsEvent(consolePrompt = "")
   invisible(game_stat)

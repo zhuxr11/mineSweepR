@@ -52,8 +52,8 @@ excluding \code{title}.}
 
 \item{restart_key}{Character as the key to restart game, used when you have won or lost a game.}
 
-\item{exit_key_press}{Integer as the times of boss key presses (other than \code{restart_key})
-required to close game window. This may come in handy in emergency (:D).}
+\item{exit_key_press}{Integer as the times of boss key presses (boss key is any key
+other than \code{restart_key}) required to close game window. This may come in handy in emergency (:D).}
 
 \item{debug}{Logical, internal use only.}
 }
@@ -83,7 +83,7 @@ If any unflagged adjacent tiles contain mines, one of them is triggered and you 
 \item{Game statistics}{After you win or lose a game, game statistics are recorded.}
 \item{Restart game}{You may restart game with \code{restart_key} at any time. If you have not won or lost the game,
 it is not recorded in game statistics.}
-\item{\strong{BOSS KEY!}}{You may press any key other than \code{restart_key} for \eqn{\ge} \code{exit_key_press} times
+\item{\strong{BOSS KEY!}}{You may press boss key (any key other than \code{restart_key}) for \eqn{\ge} \code{exit_key_press} times
 to close game window.}
 }
 }
