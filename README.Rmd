@@ -53,7 +53,7 @@ Below are two screenshots of the mine sweeper game. While game is in progress, t
 
 * **<span style="color:#000000; background-color:`r formals(run_game)$unmask_color`;">Light gray</span> tiles**: unmasked tiles.
 * **<span style="color:#FFFFFF; background-color:`r formals(run_game)$mask_color`;">Dark gray</span> tiles**: masked tiles.
-* **Count (<span style="color:`r eval(formals(run_game)$digit_color)[1L]`;">1</span>/<span style="color:`r eval(formals(run_game)$digit_color)[2L]`;">2</span>/<span style="color:`r eval(formals(run_game)$digit_color)[3L]`;">3</span>/...) marks** (on unmasked tiles): number of mines (blank for no mines) in 8 adjacent tiles.
+* **Count (<span style="color:`r eval(formals(run_game)$digit_color)[1L]`;">1</span>/<span style="color:`r eval(formals(run_game)$digit_color)[2L]`;">2</span>/<span style="color:`r eval(formals(run_game)$digit_color)[3L]`;">3</span>/...) marks**: number of mines (blank for no mines) in 8 adjacent tiles, revealed through unmasking.
 * **"F" marks**: <ins>f</ins>lags for possible mines on masked tiles, as found out and marked by player.
 
 There may be some additional tile types and marks after losing a game:
@@ -62,13 +62,13 @@ There may be some additional tile types and marks after losing a game:
 * **<span style="color:#FFFFFF; background-color:`r formals(run_game)$wrong_color`;">Magenta</span> tiles**: wrongly flagged tiles (e.g. flagged tiles that do not contain mines).
 * **"M" marks**: <ins>m</ins>ines in unflagged tiles (automatically unmasked after loss).
 
-The title tells game state, the number of unflagged mines and playing time.
+The title tells game state, number of unflagged mines and playing time.
 
 * **Game state**: there are 3 possible game states:
   - Alive: game in progress
-  - Bingo: after winning the game (left)
-  - Dead: after losing the game (right)
-* **The number of unflagged mines**: computed through literally subtracting the number of flags from the total number of mines, it can be negative and does not tell whether the flags are correct or not.
+  - Bingo: after winning a game (left)
+  - Dead: after losing a game (right)
+* **Number of unflagged mines**: computed through literally subtracting the number of flags from the total number of mines, it can be negative and does not tell whether the flags are correct or not.
 * **Playing time**: game timing starts when any tile is unmasked. 
 
 ```{r game-screenshots, echo=FALSE, out.width="50%"}

@@ -15,8 +15,8 @@ stats](https://cranlogs.r-pkg.org/badges/grand-total/mineSweepR)](https://CRAN.R
 <!-- badges: end -->
 
 **Package**: [*mineSweepR*](https://github.com/zhuxr11/mineSweepR)
-0.0.0.9000<br /> **Author**: Xiurui Zhu<br /> **Modified**: 2023-10-06
-21:25:48<br /> **Compiled**: 2023-10-06 21:25:56
+0.1.0<br /> **Author**: Xiurui Zhu<br /> **Modified**: 2023-10-06
+21:40:22<br /> **Compiled**: 2023-10-06 21:40:31
 
 **Let’s have fun with R!** This is the very popular mine sweeper game!
 In this game, you are required to find out tiles that contain mines
@@ -54,8 +54,8 @@ progress, there are some tile types and marks:
   gray</span> tiles**: masked tiles.
 - **Count (<span style="color:#1F78C8;">1</span>/<span
   style="color:#ff0000;">2</span>/<span
-  style="color:#33a02c;">3</span>/…) marks** (on unmasked tiles): number
-  of mines (blank for no mines) in 8 adjacent tiles.
+  style="color:#33a02c;">3</span>/…) marks**: number of mines (blank for
+  no mines) in 8 adjacent tiles, revealed through unmasking.
 - **“F” marks**: <ins>f</ins>lags for possible mines on masked tiles, as
   found out and marked by player.
 
@@ -70,16 +70,15 @@ There may be some additional tile types and marks after losing a game:
 - **“M” marks**: <ins>m</ins>ines in unflagged tiles (automatically
   unmasked after loss).
 
-The title tells game state, the number of unflagged mines and playing
-time.
+The title tells game state, number of unflagged mines and playing time.
 
 - **Game state**: there are 3 possible game states:
   - Alive: game in progress
-  - Bingo: after winning the game (left)
-  - Dead: after losing the game (right)
-- **The number of unflagged mines**: computed through literally
-  subtracting the number of flags from the total number of mines, it can
-  be negative and does not tell whether the flags are correct or not.
+  - Bingo: after winning a game (left)
+  - Dead: after losing a game (right)
+- **Number of unflagged mines**: computed through literally subtracting
+  the number of flags from the total number of mines, it can be negative
+  and does not tell whether the flags are correct or not.
 - **Playing time**: game timing starts when any tile is unmasked.
 
 <img src="man/figures/screenshot1.png" width="50%" /><img src="man/figures/screenshot2.png" width="50%" />
