@@ -1,0 +1,124 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# Mine Sweeper Game in R
+
+<!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![CRAN status](https://www.r-pkg.org/badges/version/mineSweepR)](https://CRAN.R-project.org/package=mineSweepR)
+[![R-CMD-check](https://github.com/zhuxr11/mineSweepR/workflows/R-CMD-check/badge.svg)](https://github.com/zhuxr11/mineSweepR/actions)
+[![Download stats](https://cranlogs.r-pkg.org/badges/grand-total/mineSweepR)](https://CRAN.R-project.org/package=mineSweepR)
+<!-- badges: end -->
+
+**Package**: [*mineSweepR*](https://github.com/zhuxr11/mineSweepR) `r pkgload::pkg_version()`<br />
+**Author**: Xiurui Zhu<br />
+**Modified**: `r file.info("README.Rmd")$mtime`<br />
+**Compiled**: `r Sys.time()`
+
+**Let's have fun with R!** This is the very popular mine sweeper game! In this game, you are required to find out tiles that contain mines through clues from unmasking neighboring tiles. Each tile that does not contain a mine shows the number of mines in its adjacent tiles. If you unmask all tiles that do not contain mines, you win the game; if you unmask any tile that contains a mine, you lose the game. While in R, you may also run `library(mineSweepR); help(run_game)` and check details for game instructions.
+
+## Installation
+
+You can install the released version of `mineSweepR` from [CRAN](https://cran.r-project.org/) with:
+
+``` r
+install.packages("mineSweepR")
+```
+
+Alternatively, you can install the developmental version of `mineSweepR` from [github](https://github.com/) with:
+
+``` r
+remotes::install_github("zhuxr11/mineSweepR")
+```
+
+## Game layout
+
+```{r, include=FALSE}
+pkgload::load_all()
+```
+
+Below are two screenshots of the mine sweeper game. While game is in progress, there are some tile types and marks:
+
+* **<span style="color:#000000; background-color:`r formals(run_game)$unmask_color`;">Light gray</span> tiles**: unmasked tiles.
+* **<span style="color:#FFFFFF; background-color:`r formals(run_game)$mask_color`;">Dark gray</span> tiles**: masked tiles.
+* **Count (<span style="color:`r eval(formals(run_game)$digit_color)[1L]`;">1</span>/<span style="color:`r eval(formals(run_game)$digit_color)[2L]`;">2</span>/<span style="color:`r eval(formals(run_game)$digit_color)[3L]`;">3</span>/...) marks** (on unmasked tiles): number of mines (blank for no mines) in 8 adjacent tiles.
+* **"F" marks**: <ins>f</ins>lags for possible mines on masked tiles, as found out and marked by player.
+
+There may be some additional tile types and marks after losing a game:
+
+* **<span style="color:#000000; background-color:`r formals(run_game)$hit_color`;">Red</span> tile**: unmasked tile containing a mine (the tile that leads to loss).
+* **<span style="color:#FFFFFF; background-color:`r formals(run_game)$wrong_color`;">Magenta</span> tiles**: wrongly flagged tiles (e.g. flagged tiles that do not contain mines).
+* **"M" marks**: <ins>m</ins>ines in unflagged tiles (automatically unmasked after loss).
+
+The title tells game state, the number of unflagged mines and playing time.
+
+* **Game state**: there are 3 possible game states:
+  - Alive: game in progress
+  - Bingo: after winning the game (left)
+  - Dead: after losing the game (right)
+* **The number of unflagged mines**: computed through literally subtracting the number of flags from the total number of mines, it can be negative and does not tell whether the flags are correct or not.
+* **Playing time**: game timing starts when any tile is unmasked. 
+
+```{r game-screenshots, echo=FALSE, out.width="50%"}
+knitr::include_graphics(
+  list.files(file.path("man", "figures"),
+             pattern = "^screenshot.*\\.png$",
+             full.names = TRUE,
+             recursive = FALSE)
+)
+```
+
+## Game instructions
+
+```{r game-instructions, echo=FALSE}
+# Get content from Rd file and convert to HTML
+instruct_content <- htmltools::HTML(capture.output(
+  tools::Rd2HTML(gbRd::Rdo_section(tools::parse_Rd("man/run_game.Rd"), "\\details"), fragment = TRUE)
+))
+local({
+  # Load default game settings
+  rlang::env_bind(rlang::current_env(), !!!formals(run_game))
+  # Parse HTML nodes and output (raw HTML to avoid any escaping)
+  knitr::raw_html(
+    glue::glue(
+      as.character(rvest::html_element(rvest::read_html(instruct_content), "dl")),
+      # Replace game settings with default values
+      unmask_button = "<ins>left mouse button</ins>",
+      flag_button = "<ins>right mouse button</ins>",
+      restart_key = paste0("<code>", restart_key, "</code>"),
+      exit_key_press = exit_key_press,
+      .open = "<code>",
+      .close = "</code>"
+    )
+  )
+})
+```
+
+## Game customization
+
+`run_game()` offers a handful of options to customize the game, including:
+
+```{r game-customization, echo=FALSE}
+# Get content from Rd file and convert to HTML
+custom_content <- htmltools::HTML(capture.output(tools::Rd2HTML(tools::parse_Rd("man/run_game.Rd"))))
+custom_content <- rvest::html_element(rvest::read_html(custom_content), "table[summary=\"R argblock\"]")
+# Extract argument list content and remove trivial arguments
+custom_content_df <- rvest::html_table(custom_content)
+custom_content_use_lgl <- (custom_content_df[[1L]] %in% "debug" == FALSE)
+xml2::xml_remove(xml2::xml_children(custom_content)[custom_content_use_lgl == FALSE])
+# Output (raw HTML to avoid any escaping)
+knitr::raw_html(as.character(custom_content))
+```
+
