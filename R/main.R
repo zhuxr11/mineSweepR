@@ -215,11 +215,13 @@ run_game <- function(
                     hit_col_idx <- tile_col
                   } else {
                     # Unmask a tile
-                    new_mask_mat <- unmask_game_panel(row_idx = tile_row,
-                                                      col_idx = tile_col,
-                                                      mask_mat = mask_mat,
-                                                      count_mat = count_mat,
-                                                      no_mine_zone = find_no_mine_zone(count_mat, flag_mat))
+                    new_mask_mat <- unmask_game_panel(
+                      row_idx = tile_row,
+                      col_idx = tile_col,
+                      mask_mat = mask_mat,
+                      count_mat = count_mat,
+                      no_mine_zone = find_no_mine_zone(count_mat, flag_mat, mask_mat)
+                    )
                     rlang::env_bind(rlang::env_parent(), mask_mat = new_mask_mat)
                   }
                 }
@@ -267,11 +269,13 @@ run_game <- function(
                   }
                   new_mask_mat <- Reduce(
                     function(cur_res, idx) {
-                      unmask_game_panel(row_idx = unmask_scheme[["row_idx"]][idx],
-                                        col_idx = unmask_scheme[["col_idx"]][idx],
-                                        mask_mat = cur_res,
-                                        count_mat = count_mat,
-                                        no_mine_zone = find_no_mine_zone(count_mat, flag_mat))
+                      unmask_game_panel(
+                        row_idx = unmask_scheme[["row_idx"]][idx],
+                        col_idx = unmask_scheme[["col_idx"]][idx],
+                        mask_mat = cur_res,
+                        count_mat = count_mat,
+                        no_mine_zone = find_no_mine_zone(count_mat, flag_mat, mask_mat)
+                      )
                     },
                     x = seq_len(nrow(unmask_scheme)),
                     init = mask_mat
@@ -471,10 +475,11 @@ gen_count_mat <- function(mine_mat) {
 #'
 #' @keywords internal
 #' @noRd
-find_no_mine_zone <- function(count_mat, flag_mat, no_mine_count = 0L) {
+find_no_mine_zone <- function(count_mat, flag_mat, mask_mat, no_mine_count = 0L) {
   count_mask_mat <- (is.na(count_mat) == FALSE) &
     (count_mat <= no_mine_count) &
-    (flag_mat == FALSE)
+    (flag_mat == FALSE) &
+    (mask_mat == TRUE)
   mgc::ConnCompLabel(count_mask_mat)
 }
 
