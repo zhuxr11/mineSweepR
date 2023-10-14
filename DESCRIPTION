@@ -1,6 +1,6 @@
 Package: mineSweepR
 Title: Mine Sweeper Game
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R: 
     person("Xiurui", "Zhu", , "zxr6@163.com", role = c("aut", "cre"),
            comment = NULL)
